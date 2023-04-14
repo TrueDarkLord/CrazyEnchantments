@@ -205,6 +205,8 @@ public class PickaxeEnchantments implements Listener {
             for (Entry<ItemStack, Integer> item : drops.entrySet()) {
                 item.getKey().setAmount(item.getValue());
 
+                if (item.getKey().getType().equals(Material.SPAWNER)) continue; // Removes the handling of spawners by this plugin.
+
                 if (methods.isInventoryFull(player)) {
                     try {
                         player.getWorld().dropItem(player.getLocation(), item.getKey());
