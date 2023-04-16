@@ -286,6 +286,7 @@ public class PickaxeEnchantments implements Listener {
     }
 
     private void tryCheck(Block block, ItemStack item, List<CEnchantment> enchantments, int dropAmount) {
+        if (block.getType() == Material.SPAWNER) return; // No more handling Spawners!!!
         try {
             block.getWorld().dropItem(block.getLocation().add(.5, 0, .5), getOreDrop(block.getType(), dropAmount));
         } catch (IllegalArgumentException ignore) {}
