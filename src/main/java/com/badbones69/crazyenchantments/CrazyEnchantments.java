@@ -160,7 +160,8 @@ public class CrazyEnchantments extends JavaPlugin implements Listener {
     }
 
     private void disable() {
-        armorEnchantments.stop();
+
+        if (armorEnchantments != null) armorEnchantments.stop();
 
         if (starter.getAllyManager() != null) starter.getAllyManager().forceRemoveAllies();
 
