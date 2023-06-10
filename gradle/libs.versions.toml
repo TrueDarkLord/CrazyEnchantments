@@ -1,7 +1,7 @@
 [libraries]
 
 # Minecraft
-papermc = { module = "io.papermc.paper:paper-api", version = "1.19.4-R0.1-SNAPSHOT" }
+papermc = { module = "io.papermc.paper:paper-api", version = "1.20-R0.1-SNAPSHOT" }
 hangar = { module = "io.papermc:hangar-publish-plugin", version = "0.0.5" }
 
 minotaur = { module = "com.modrinth.minotaur:Minotaur", version = "2.7.2" }
@@ -16,7 +16,7 @@ turtle = { module = "com.lordcodes.turtle:turtle", version = "0.8.0" }
 crazycore = { module = "us.crazycrew.crazycore:crazycore-api", version = "2.0.0.4" }
 
 # Misc
-nbt_api = { module = "de.tr7zw:item-nbt-api", version = "2.11.2" }
+nbt_api = { module = "de.tr7zw:item-nbt-api", version = "2.11.3" }
 bstats_bukkit = { module = "org.bstats:bstats-bukkit", version = "3.0.0" }
 vault_api = { module = "com.github.MilkBowl:VaultAPI", version = "1.7" }
 

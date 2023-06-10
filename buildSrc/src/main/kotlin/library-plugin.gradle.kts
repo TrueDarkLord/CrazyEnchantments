@@ -52,7 +52,7 @@ val desc = """
 """.trimIndent()
 
 val versions = listOf(
-    "1.19.4"
+    "1.20"
 )
 
 fun getGitHistory(): List<String> {
