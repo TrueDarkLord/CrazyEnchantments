@@ -22,6 +22,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
+import org.jetbrains.annotations.NotNull;
 import org.jline.utils.Log;
 
 import java.util.ArrayList;
@@ -71,7 +72,7 @@ public class EnchantmentBookSettings {
      */
     public boolean hasEnchantment(ItemStack item, CEnchantment enchantment) {
 
-        if (!ItemUtils.verifyItemLore(item)) return false;
+        if (item == null) return false;
 
         PersistentDataContainer data = item.getItemMeta().getPersistentDataContainer();
 
@@ -406,7 +407,6 @@ public class EnchantmentBookSettings {
         List<String> newLore = new ArrayList<>();
         ItemMeta meta = item.getItemMeta();
 
-        StringBuilder pdcLore = new StringBuilder();
         if (meta != null && meta.hasLore()) {
             List<String> itemLore = meta.getLore();
 
@@ -414,7 +414,6 @@ public class EnchantmentBookSettings {
                 for (String lore : itemLore) {
                     if (!lore.contains(enchant.getCustomName())) {
                         newLore.add(lore);
-                        pdcLore.append(lore).append("|");
                     };
                 }
             }
@@ -424,7 +423,11 @@ public class EnchantmentBookSettings {
 
         NamespacedKey key = new NamespacedKey(plugin, "CeEnchantments");
         assert meta != null;
-        meta.getPersistentDataContainer().set(key, PersistentDataType.STRING, pdcLore.toString());
+
+        String pdcLore = meta.getPersistentDataContainer().get(key, PersistentDataType.STRING)
+                .replace(enchant.getName() + ":" + enchant.getLevel(item) + " | ", "");
+
+        meta.getPersistentDataContainer().set(key, PersistentDataType.STRING, pdcLore);
 
         item.setItemMeta(meta);
 
