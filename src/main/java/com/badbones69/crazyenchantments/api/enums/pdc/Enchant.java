@@ -10,7 +10,7 @@ public class Enchant implements Serializable {
     private final HashMap<String, Integer> enchants;
 
     public Enchant(HashMap<String, Integer> enchants) {
-        this.enchants = enchants;
+        this.enchants = enchants == null ? new HashMap<>() : enchants;
     }
 
     /**

@@ -4,7 +4,6 @@ import com.badbones69.crazyenchantments.CrazyEnchantments;
 import com.badbones69.crazyenchantments.api.FileManager;
 import com.badbones69.crazyenchantments.api.economy.Currency;
 import com.badbones69.crazyenchantments.api.enums.pdc.Enchant;
-import com.badbones69.crazyenchantments.api.enums.pdc.EnchantData;
 import com.badbones69.crazyenchantments.api.objects.CEBook;
 import com.badbones69.crazyenchantments.api.objects.CEnchantment;
 import com.badbones69.crazyenchantments.api.objects.Category;
@@ -15,6 +14,7 @@ import com.badbones69.crazyenchantments.utilities.misc.EnchantUtils;
 import com.badbones69.crazyenchantments.utilities.misc.ItemUtils;
 import com.badbones69.crazyenchantments.utilities.misc.NumberUtils;
 import com.google.common.collect.Lists;
+import com.google.gson.Gson;
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -22,6 +22,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
+import org.bukkit.persistence.PersistentDataType;
 import org.jline.utils.Log;
 
 import java.util.ArrayList;
@@ -72,19 +73,21 @@ public class EnchantmentBookSettings {
     public boolean hasEnchantment(ItemStack item, CEnchantment enchantment) {
 
     // PDC Start
+        Gson g = new Gson();
+
         if (item == null || item.getItemMeta() == null) return false;
 
-        NamespacedKey key = new NamespacedKey(plugin, "ceEnchantments");
+        NamespacedKey key = new NamespacedKey(plugin, "JsonCeEnchantments");
 
         PersistentDataContainer data = item.getItemMeta().getPersistentDataContainer();
 
         if (data == null) return false;
         if (!data.has(key)) return false;
 
-        Enchant itemData = data.get(key, new EnchantData());
+        String itemData = data.get(key, PersistentDataType.STRING);
         if (itemData == null) return false;
 
-        return itemData.hasEnchantment(enchantment.getName());
+        return g.fromJson(itemData, Enchant.class).hasEnchantment(enchantment.getName());
 
     // PDC End
     }
@@ -426,20 +429,26 @@ public class EnchantmentBookSettings {
         if (meta != null) meta.setLore(newLore);
 
     // PDC Start
-        NamespacedKey key = new NamespacedKey(plugin, "ceEnchantments");
+        Gson g = new Gson();
+
+        String data;
+        Enchant eData;
+
+        NamespacedKey key = new NamespacedKey(plugin, "JsonCeEnchantments");
 
         assert meta != null;
-        Enchant data = meta.getPersistentDataContainer().has(key) ? meta.getPersistentDataContainer().get(key, new EnchantData()) : new Enchant(new HashMap<>());
+        data = meta.getPersistentDataContainer().get(key, PersistentDataType.STRING);
+        if (data != null) {
+            eData = g.fromJson(data, Enchant.class);
+        } else {
+            eData = new Enchant(new HashMap<>());
+        }
 
-        assert data != null;
-        data.removeEnchantment(enchant.getName());
 
-//        if (data.isEmpty()) {
-//            meta.getPersistentDataContainer().remove(key);
-//        } else {
-//            meta.getPersistentDataContainer().set(key, new EnchantData(), data);
-//        }
-        meta.getPersistentDataContainer().set(key, new EnchantData(), data);
+        eData.removeEnchantment(enchant.getName());
+
+
+        meta.getPersistentDataContainer().set(key, PersistentDataType.STRING, g.toJson(eData));
     // PDC End
 
         item.setItemMeta(meta);
