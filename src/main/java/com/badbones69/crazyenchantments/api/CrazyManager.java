@@ -657,12 +657,19 @@ public class CrazyManager {
             NamespacedKey key = new NamespacedKey(plugin, "ceEnchantments");
 
             assert meta != null;
-            Enchant data = meta.getPersistentDataContainer().has(key) ? meta.getPersistentDataContainer().get(key, new EnchantData()) : new Enchant(new HashMap<CEnchantment, Integer>());
+            Enchant data = (meta.getPersistentDataContainer().has(key)) ? meta.getPersistentDataContainer().get(key, new EnchantData()) : new Enchant(new HashMap<CEnchantment, Integer>());
+
+
+            //data.addEnchantments(enchantments);
+
+            for (Entry<CEnchantment, Integer> es : enchantments.entrySet()) {
+                plugin.getLogger().warning(es.getKey() + " " + es.getValue());
+                data.addEnchantment(es.getKey(), es.getValue());
+            }
+
 
             assert data != null;
-            data.addEnchantments(enchantments);
-
-            meta.getPersistentDataContainer().set(key, new EnchantData(), new Enchant(new HashMap<CEnchantment, Integer>()));
+            meta.getPersistentDataContainer().set(key, new EnchantData(), data);
         // PDC End
 
             item.setItemMeta(meta);
