@@ -665,9 +665,9 @@ public class CrazyManager {
             Enchant dta;
             dta = meta.getPersistentDataContainer().has(testKey) ? meta.getPersistentDataContainer().get(testKey, new EnchantData()) : new Enchant(new HashMap<>());
 
-            dta.addEnchantment();
-
             assert dta != null;
+            dta.addEnchantments(enchantments);
+
             meta.getPersistentDataContainer().set(testKey, new EnchantData(), dta);
         // Edit me!!!
 
