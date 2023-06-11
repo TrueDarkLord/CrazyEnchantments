@@ -8,16 +8,15 @@ import com.badbones69.crazyenchantments.api.enums.Dust;
 import com.badbones69.crazyenchantments.api.enums.Scrolls;
 import com.badbones69.crazyenchantments.api.enums.ShopOption;
 import com.badbones69.crazyenchantments.api.enums.pdc.Enchant;
+import com.badbones69.crazyenchantments.api.enums.pdc.EnchantData;
 import com.badbones69.crazyenchantments.api.managers.*;
 import com.badbones69.crazyenchantments.api.managers.guis.InfoMenuManager;
 import com.badbones69.crazyenchantments.api.objects.gkitz.GKitz;
 import com.badbones69.crazyenchantments.api.objects.gkitz.GkitCoolDown;
 import com.badbones69.crazyenchantments.api.support.CropManager;
 import com.badbones69.crazyenchantments.api.support.interfaces.CropManagerVersion;
-import com.badbones69.crazyenchantments.api.support.interfaces.claims.WorldGuardVersion;
 import com.badbones69.crazyenchantments.api.objects.*;
 import com.badbones69.crazyenchantments.controllers.settings.EnchantmentBookSettings;
-import com.badbones69.crazyenchantments.controllers.settings.EnchantmentSettings;
 import com.badbones69.crazyenchantments.controllers.settings.ProtectionCrystalSettings;
 import com.badbones69.crazyenchantments.listeners.ScramblerListener;
 import com.badbones69.crazyenchantments.listeners.ScrollListener;
@@ -25,7 +24,6 @@ import com.badbones69.crazyenchantments.utilities.WingsUtils;
 import com.badbones69.crazyenchantments.utilities.misc.ColorUtils;
 import com.badbones69.crazyenchantments.utilities.misc.NumberUtils;
 import de.tr7zw.changeme.nbtapi.NBTItem;
-import it.unimi.dsi.fastutil.Hash;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.attribute.Attribute;
@@ -37,8 +35,8 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.permissions.PermissionAttachmentInfo;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.potion.PotionEffectType;
+import org.jetbrains.annotations.Nullable;
 
-import java.awt.event.ComponentEvent;
 import java.util.*;
 import java.util.Map.Entry;
 
@@ -661,8 +659,16 @@ public class CrazyManager {
 
             assert meta != null;
             meta.getPersistentDataContainer().set(key, PersistentDataType.PrimitivePersistentDataType.STRING, pdcLore.toString());
-        // Edit me!!!
-            //item.getItemMeta().getPersistentDataContainer().set(key, new Enchant(), new Map<enchantment, level>);
+
+        // Edit Me!!!
+            NamespacedKey testKey = new NamespacedKey(plugin, "TestEnchantments");
+            Enchant dta;
+            dta = meta.getPersistentDataContainer().has(testKey) ? meta.getPersistentDataContainer().get(testKey, new EnchantData()) : new Enchant(new HashMap<>());
+
+            dta.addEnchantment();
+
+            assert dta != null;
+            meta.getPersistentDataContainer().set(testKey, new EnchantData(), dta);
         // Edit me!!!
 
             item.setItemMeta(meta);

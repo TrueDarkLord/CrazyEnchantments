@@ -1,33 +1,45 @@
 package com.badbones69.crazyenchantments.api.enums.pdc;
 
 import com.badbones69.crazyenchantments.api.objects.CEnchantment;
-import org.bukkit.persistence.PersistentDataAdapterContext;
-import org.bukkit.persistence.PersistentDataType;
-import org.jetbrains.annotations.NotNull;
 
-public class Enchant implements PersistentDataType<CEnchantment, Integer> {
+import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Set;
 
+public class Enchant implements Serializable {
 
+    private final HashMap<CEnchantment, Integer> enchants;
 
-    @Override
-    public @NotNull Class<CEnchantment> getPrimitiveType() {
-        return CEnchantment.class;
+    public Enchant(HashMap<CEnchantment, Integer> enchants){
+        this.enchants = enchants;
     }
 
-    @Override
-    public @NotNull Class<Integer> getComplexType() {
-        return Integer.class;
+    public boolean hasEnchantment(CEnchantment enchantment) {
+        return this.enchants.containsKey(enchantment);
     }
 
-    @Override
-    public @NotNull CEnchantment toPrimitive(@NotNull Integer complex, @NotNull PersistentDataAdapterContext context) {
-        return null;
+    public HashMap<CEnchantment, Integer> getFullEnchantments() {
+        return this.enchants;
     }
 
-    @Override
-    public @NotNull Integer fromPrimitive(@NotNull CEnchantment primitive, @NotNull PersistentDataAdapterContext context) {
-        return null;
+    public Set<CEnchantment> getEnchantments() {
+        return this.enchants.keySet();
     }
 
+    public Integer getLevel(CEnchantment enchantment) {
+        return this.enchants.get(enchantment);
+    }
+
+    public void addEnchantments() {
+        this.enchants.put(enchantment, level);
+    }
+
+    public void addEnchantment(CEnchantment enchantment, Integer level) {
+        this.enchants.put(enchantment, level);
+    }
+
+    public void removeEnchantment(CEnchantment enchantment) {
+        this.enchants.remove(enchantment);
+    }
 
 }
