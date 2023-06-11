@@ -627,7 +627,6 @@ public class CrazyManager {
 
             List<String> newLore = new ArrayList<>();
             List<String> lores = new ArrayList<>();
-            StringBuilder pdcLore = new StringBuilder();
             HashMap<String, String> enchantmentStrings = new HashMap<>();
 
             for (CEnchantment en : enchantmentBookSettings.getEnchantmentsOnItem(item)) {
@@ -648,28 +647,23 @@ public class CrazyManager {
 
             for (Entry<String, String> stringEntry : enchantmentStrings.entrySet()) {
                 newLore.add(stringEntry.getValue());
-                pdcLore.append(stringEntry.getValue()).append(" | ");
             }
 
             newLore.addAll(lores);
 
             if (meta != null) meta.setLore(newLore);
 
-            NamespacedKey key = new NamespacedKey(plugin, "CeEnchantments");
+        // PDC Start
+            NamespacedKey key = new NamespacedKey(plugin, "ceEnchantments");
 
             assert meta != null;
-            meta.getPersistentDataContainer().set(key, PersistentDataType.PrimitivePersistentDataType.STRING, pdcLore.toString());
+            Enchant data = meta.getPersistentDataContainer().has(key) ? meta.getPersistentDataContainer().get(key, new EnchantData()) : new Enchant(new HashMap<>());
 
-        // Edit Me!!!
-            NamespacedKey testKey = new NamespacedKey(plugin, "TestEnchantments");
-            Enchant dta;
-            dta = meta.getPersistentDataContainer().has(testKey) ? meta.getPersistentDataContainer().get(testKey, new EnchantData()) : new Enchant(new HashMap<>());
+            assert data != null;
+            data.addEnchantments(enchantments);
 
-            assert dta != null;
-            dta.addEnchantments(enchantments);
-
-            meta.getPersistentDataContainer().set(testKey, new EnchantData(), dta);
-        // Edit me!!!
+            meta.getPersistentDataContainer().set(key, new EnchantData(), data);
+        // PDC End
 
             item.setItemMeta(meta);
 

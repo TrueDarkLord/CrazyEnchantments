@@ -3,6 +3,8 @@ package com.badbones69.crazyenchantments.controllers.settings;
 import com.badbones69.crazyenchantments.CrazyEnchantments;
 import com.badbones69.crazyenchantments.api.FileManager;
 import com.badbones69.crazyenchantments.api.economy.Currency;
+import com.badbones69.crazyenchantments.api.enums.pdc.Enchant;
+import com.badbones69.crazyenchantments.api.enums.pdc.EnchantData;
 import com.badbones69.crazyenchantments.api.objects.CEBook;
 import com.badbones69.crazyenchantments.api.objects.CEnchantment;
 import com.badbones69.crazyenchantments.api.objects.Category;
@@ -72,17 +74,18 @@ public class EnchantmentBookSettings {
      */
     public boolean hasEnchantment(ItemStack item, CEnchantment enchantment) {
 
+    // PDC Start
         if (item == null || item.getItemMeta() == null) return false;
+
+        NamespacedKey key = new NamespacedKey(plugin, "ceEnchantments");
 
         PersistentDataContainer data = item.getItemMeta().getPersistentDataContainer();
 
-        NamespacedKey key = new NamespacedKey(plugin, "CeEnchantments");
-
         if (!data.has(key)) return false;
 
-        if (data.get(key, PersistentDataType.STRING).contains(enchantment.getName())) return true;
+        return data.get(key, new EnchantData()).hasEnchantment(enchantment);
 
-        return false;
+    // PDC End
     }
 
     /**
@@ -421,13 +424,21 @@ public class EnchantmentBookSettings {
 
         if (meta != null) meta.setLore(newLore);
 
-        NamespacedKey key = new NamespacedKey(plugin, "CeEnchantments");
+    // PDC Start
+        NamespacedKey key = new NamespacedKey(plugin, "ceEnchantments");
+
         assert meta != null;
+        Enchant data = meta.getPersistentDataContainer().has(key) ? meta.getPersistentDataContainer().get(key, new EnchantData()) : new Enchant(new HashMap<>());
 
-        String pdcLore = meta.getPersistentDataContainer().get(key, PersistentDataType.STRING)
-                .replace(enchant.getName(), "Removed");
+        assert data != null;
+        data.removeEnchantment(enchant);
 
-        meta.getPersistentDataContainer().set(key, PersistentDataType.STRING, pdcLore);
+        if (data.isEmpty()) {
+            meta.getPersistentDataContainer().remove(key);
+        } else {
+            meta.getPersistentDataContainer().set(key, new EnchantData(), data);
+        }
+    // PDC End
 
         item.setItemMeta(meta);
 

@@ -55,4 +55,6 @@ public class Enchant implements Serializable {
      */
     public void removeEnchantment(CEnchantment enchantment) { this.enchants.remove(enchantment); }
 
+    public boolean isEmpty() { return enchants.isEmpty(); }
+
 }
