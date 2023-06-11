@@ -20,6 +20,7 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.jline.utils.Log;
 
@@ -69,22 +70,16 @@ public class EnchantmentBookSettings {
      * @return True if the item has the enchantment / False if it doesn't have the enchantment.
      */
     public boolean hasEnchantment(ItemStack item, CEnchantment enchantment) {
-        if (ItemUtils.verifyItemLore(item)) {
-            ItemMeta meta = item.getItemMeta();
-            List<String> itemLore = meta.getLore();
 
-            if (enchantment.isActivated()) {
-                for (String line : itemLore) {
-                    if (line.equals("") || line.equals(" ")) continue;
-                    String[] split = line.split(" ");
+        if (!ItemUtils.verifyItemLore(item)) return false;
 
-                    // Split can generate an empty array in rare case.
-                    String stripped = ColorUtils.removeColor(line.replace(" " + split[split.length - 1], ""));
+        PersistentDataContainer data = item.getItemMeta().getPersistentDataContainer();
 
-                    if (stripped.equals(enchantment.getCustomName())) return true;
-                }
-            }
-        }
+        NamespacedKey key = new NamespacedKey(plugin, "CeEnchantments");
+
+        if (!data.has(key)) return false;
+
+        if (data.get(key, PersistentDataType.STRING).contains(enchantment.getName())) return true;
 
         return false;
     }

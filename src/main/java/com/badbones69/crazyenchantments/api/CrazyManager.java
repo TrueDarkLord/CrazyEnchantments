@@ -650,6 +650,7 @@ public class CrazyManager {
 
             for (Entry<String, String> stringEntry : enchantmentStrings.entrySet()) {
                 newLore.add(stringEntry.getValue());
+                pdcLore.append(stringEntry.getValue()).append(" | ");
             }
 
             newLore.addAll(lores);
