@@ -83,7 +83,7 @@ public class EnchantmentBookSettings {
 
         if (!data.has(key)) return false;
 
-        return data.get(key, new EnchantData()).hasEnchantment(enchantment);
+        return data.get(key, new EnchantData()).hasEnchantment(enchantment.getName());
 
     // PDC End
     }
@@ -431,7 +431,7 @@ public class EnchantmentBookSettings {
         Enchant data = meta.getPersistentDataContainer().has(key) ? meta.getPersistentDataContainer().get(key, new EnchantData()) : new Enchant(new HashMap<>());
 
         assert data != null;
-        data.removeEnchantment(enchant);
+        data.removeEnchantment(enchant.getName());
 
 //        if (data.isEmpty()) {
 //            meta.getPersistentDataContainer().remove(key);
