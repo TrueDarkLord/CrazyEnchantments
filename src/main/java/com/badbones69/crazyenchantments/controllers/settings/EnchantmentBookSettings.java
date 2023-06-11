@@ -1,5 +1,6 @@
 package com.badbones69.crazyenchantments.controllers.settings;
 
+import com.badbones69.crazyenchantments.CrazyEnchantments;
 import com.badbones69.crazyenchantments.api.FileManager;
 import com.badbones69.crazyenchantments.api.economy.Currency;
 import com.badbones69.crazyenchantments.api.objects.CEBook;
@@ -12,11 +13,14 @@ import com.badbones69.crazyenchantments.utilities.misc.EnchantUtils;
 import com.badbones69.crazyenchantments.utilities.misc.ItemUtils;
 import com.badbones69.crazyenchantments.utilities.misc.NumberUtils;
 import com.google.common.collect.Lists;
+import com.vdurmont.semver4j.Tokenizer;
 import org.bukkit.Color;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.persistence.PersistentDataType;
 import org.jline.utils.Log;
 
 import java.util.ArrayList;
@@ -30,6 +34,8 @@ public class EnchantmentBookSettings {
     private ItemBuilder enchantmentBook;
 
     private final List<Category> categories = Lists.newArrayList();
+
+    private final CrazyEnchantments plugin = CrazyEnchantments.getPlugin();
 
     private final List<CEnchantment> registeredEnchantments = Lists.newArrayList();
 
@@ -405,19 +411,28 @@ public class EnchantmentBookSettings {
         List<String> newLore = new ArrayList<>();
         ItemMeta meta = item.getItemMeta();
 
+        StringBuilder pdcLore = new StringBuilder();
         if (meta != null && meta.hasLore()) {
             List<String> itemLore = meta.getLore();
 
             if (itemLore != null) {
                 for (String lore : itemLore) {
-                    if (!lore.contains(enchant.getCustomName())) newLore.add(lore);
+                    if (!lore.contains(enchant.getCustomName())) {
+                        newLore.add(lore);
+                        pdcLore.append(lore).append("|");
+                    };
                 }
             }
         }
 
         if (meta != null) meta.setLore(newLore);
 
+        NamespacedKey key = new NamespacedKey(plugin, "CeEnchantments");
+        assert meta != null;
+        meta.getPersistentDataContainer().set(key, PersistentDataType.STRING, pdcLore.toString());
+
         item.setItemMeta(meta);
+
         return item;
     }
 }
