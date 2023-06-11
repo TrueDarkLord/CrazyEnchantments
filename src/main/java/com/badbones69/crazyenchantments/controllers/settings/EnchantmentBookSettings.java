@@ -15,7 +15,6 @@ import com.badbones69.crazyenchantments.utilities.misc.EnchantUtils;
 import com.badbones69.crazyenchantments.utilities.misc.ItemUtils;
 import com.badbones69.crazyenchantments.utilities.misc.NumberUtils;
 import com.google.common.collect.Lists;
-import com.vdurmont.semver4j.Tokenizer;
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -23,8 +22,6 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
-import org.bukkit.persistence.PersistentDataType;
-import org.jetbrains.annotations.NotNull;
 import org.jline.utils.Log;
 
 import java.util.ArrayList;
@@ -68,7 +65,7 @@ public class EnchantmentBookSettings {
     }
 
     /**
-     * @param item Item that you want to check if it has an enchantment.
+     * @param item        Item that you want to check if it has an enchantment.
      * @param enchantment The enchantment you want to check if the item has.
      * @return True if the item has the enchantment / False if it doesn't have the enchantment.
      */
@@ -81,9 +78,13 @@ public class EnchantmentBookSettings {
 
         PersistentDataContainer data = item.getItemMeta().getPersistentDataContainer();
 
+        if (data == null) return false;
         if (!data.has(key)) return false;
 
-        return data.get(key, new EnchantData()).hasEnchantment(enchantment.getName());
+        Enchant itemData = data.get(key, new EnchantData());
+        if (itemData == null) return false;
+
+        return itemData.hasEnchantment(enchantment.getName());
 
     // PDC End
     }
