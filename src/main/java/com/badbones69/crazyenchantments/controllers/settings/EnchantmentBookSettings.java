@@ -72,7 +72,7 @@ public class EnchantmentBookSettings {
      */
     public boolean hasEnchantment(ItemStack item, CEnchantment enchantment) {
 
-        if (item == null) return false;
+        if (item == null || item.getItemMeta() == null) return false;
 
         PersistentDataContainer data = item.getItemMeta().getPersistentDataContainer();
 
@@ -425,7 +425,7 @@ public class EnchantmentBookSettings {
         assert meta != null;
 
         String pdcLore = meta.getPersistentDataContainer().get(key, PersistentDataType.STRING)
-                .replace(enchant.getName() + ":" + enchant.getLevel(item) + " | ", "");
+                .replace(enchant.getName(), "Removed");
 
         meta.getPersistentDataContainer().set(key, PersistentDataType.STRING, pdcLore);
 
