@@ -30,7 +30,7 @@ public class GkitzCommand implements CommandExecutor {
         boolean isPlayer = sender instanceof Player;
 
         if (crazyManager.isGkitzEnabled()) {
-            if (args.length == 0) {
+            if (args.length <= 1) {
 
                 if (!isPlayer) {
                     sender.sendMessage(Messages.PLAYERS_ONLY.getMessage());
