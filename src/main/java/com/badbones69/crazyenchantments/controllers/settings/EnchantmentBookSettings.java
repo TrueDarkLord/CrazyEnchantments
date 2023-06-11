@@ -433,11 +433,12 @@ public class EnchantmentBookSettings {
         assert data != null;
         data.removeEnchantment(enchant);
 
-        if (data.isEmpty()) {
-            meta.getPersistentDataContainer().remove(key);
-        } else {
-            meta.getPersistentDataContainer().set(key, new EnchantData(), data);
-        }
+//        if (data.isEmpty()) {
+//            meta.getPersistentDataContainer().remove(key);
+//        } else {
+//            meta.getPersistentDataContainer().set(key, new EnchantData(), data);
+//        }
+        meta.getPersistentDataContainer().set(key, new EnchantData(), data);
     // PDC End
 
         item.setItemMeta(meta);
