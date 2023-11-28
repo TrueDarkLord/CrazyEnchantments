@@ -100,7 +100,7 @@ public class Tinkerer implements Listener {
         event.setCancelled(true);
         ItemStack current = event.getCurrentItem();
 
-        if (current == null || current.isEmpty() || !current.hasItemMeta()) return;
+        if (current == null || current.getType() == Material.AIR || current.getAmount() <= 0 || !current.hasItemMeta()) return;
 
         // Recycling things.
         if (Objects.equals(current, tradeButton)) {
@@ -205,7 +205,7 @@ public class Tinkerer implements Listener {
             if (event.getView().title().equals(ColorUtils.legacyTranslateColourCodes(Files.TINKER.getFile().getString("Settings.GUIName")))) {
                 for (int slot : slots.keySet()) {
                     ItemStack item = inv.getItem(slot);
-                    if (item == null || item.isEmpty()) continue;
+                    if (item == null || item.getType() == Material.AIR || item.getAmount() <= 0) continue;
 
                     if (player.isDead()) {
                         player.getWorld().dropItem(player.getLocation(), item);

@@ -46,7 +46,7 @@ public class SlotCrystalListener implements Listener {
         ItemStack crystalItem = event.getCursor();
         ItemStack item = event.getCurrentItem();
 
-        if (item == null || item.isEmpty() || !isSlotCrystal(crystalItem) || isSlotCrystal(item)) return;
+        if (item == null || item.getType() == Material.AIR || item.getAmount() <= 0 || !isSlotCrystal(crystalItem) || isSlotCrystal(item)) return;
 
         int maxEnchants = starter.getCrazyManager().getPlayerMaxEnchantments(player);
         int enchAmount = enchantmentBookSettings.getEnchantmentAmount(item, starter.getCrazyManager().checkVanillaLimit());
@@ -64,7 +64,7 @@ public class SlotCrystalListener implements Listener {
     }
 
     private boolean isSlotCrystal(ItemStack crystalItem) {
-        if (crystalItem == null || !crystalItem.hasItemMeta() || crystalItem.isEmpty()) return false;
+        if (crystalItem == null || !crystalItem.hasItemMeta() || crystalItem.getType() == Material.AIR || crystalItem.getAmount() <=0) return false;
         return crystalItem.getItemMeta().getPersistentDataContainer().has(DataKeys.SLOT_CRYSTAL.getKey());
     }
 

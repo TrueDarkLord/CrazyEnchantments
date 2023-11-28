@@ -383,7 +383,7 @@ public class CECommand implements CommandExecutor {
                 int amount = args.length == 4 ? NumberUtils.isInt(args[3]) ? Integer.parseInt(args[3]) : 1 : 1;
                 item.setAmount(amount);
 
-                if (item.isEmpty() || target == null) return true;
+                if (item.getType() == Material.AIR || item.getAmount() <= 0 || target == null) return true;
 
                 methods.addItemToInventory(target, item);
 

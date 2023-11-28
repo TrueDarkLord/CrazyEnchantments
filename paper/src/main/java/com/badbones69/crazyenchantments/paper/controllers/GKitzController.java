@@ -13,6 +13,7 @@ import com.badbones69.crazyenchantments.paper.api.objects.ItemBuilder;
 import com.badbones69.crazyenchantments.paper.utilities.misc.ColorUtils;
 import de.tr7zw.changeme.nbtapi.NBTItem;
 import net.kyori.adventure.text.Component;
+import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -88,7 +89,7 @@ public class GKitzController implements Listener {
         Inventory inventory = event.getInventory();
         ItemStack item = event.getCurrentItem();
 
-        if (item == null || item.isEmpty()) return;
+        if (item == null || item.getType() == Material.AIR || item.getAmount() <= 0) return;
 
         Player player = (Player) event.getWhoClicked();
         CEPlayer cePlayer = crazyManager.getCEPlayer(player);
