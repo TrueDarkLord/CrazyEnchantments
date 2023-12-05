@@ -21,6 +21,7 @@ import com.badbones69.crazyenchantments.paper.utilities.misc.NumberUtils;
 import com.google.gson.Gson;
 import net.kyori.adventure.text.Component;
 import org.apache.commons.lang.WordUtils;
+import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -137,7 +138,7 @@ public class ScrollListener implements Listener {
         Player player = event.getPlayer();
         ItemStack scroll = methods.getItemInHand(player);
 
-        if (scroll.isEmpty()) return;
+        if (scroll.getType() == Material.AIR || scroll.getAmount() < 1) return;
 
         if (scroll.isSimilar(Scrolls.BLACK_SCROLL.getScroll())) {
             event.setCancelled(true);
