@@ -13,11 +13,13 @@ import com.badbones69.crazyenchantments.paper.api.utils.EventUtils;
 import com.badbones69.crazyenchantments.paper.controllers.settings.EnchantmentBookSettings;
 import com.badbones69.crazyenchantments.paper.support.PluginSupport;
 import org.bukkit.Material;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
@@ -28,6 +30,7 @@ import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 public class AxeEnchantments implements Listener {
@@ -50,6 +53,27 @@ public class AxeEnchantments implements Listener {
     // Plugin Support.
     @NotNull
     private final PluginSupport pluginSupport = this.starter.getPluginSupport();
+
+
+    @EventHandler
+    public void onBlockBreak(BlockBreakEvent event) {
+        if (EventUtils.isIgnoredEvent(event)) return;
+
+        Player player = event.getPlayer();
+        ItemStack item = player.getInventory().getItemInMainHand();
+        Map<CEnchantment, Integer> enchantments = enchantmentBookSettings.getEnchantments(item);
+
+        if (enchantments.isEmpty()) return;
+
+        if (!EnchantUtils.isEventActive(CEnchantments.TREEFELLER, player, item, enchantments)) return;
+
+
+
+    }
+
+    private void climbUp() {
+        
+    }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onPlayerDamage(EntityDamageByEntityEvent event) {

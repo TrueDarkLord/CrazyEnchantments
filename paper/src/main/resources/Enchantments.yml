@@ -1819,6 +1819,25 @@ Enchantments:
       - 'Common'
       - 'Rare'
       - 'Legendary'
+  #Do not change this line
+  TreeFeller:
+    Enabled: true
+    Sound: "ENTITY_PLAYER_LEVELUP"
+    Name: "&7Tree Feller"
+    MaxPower: 10
+    Enchantment-Type: "Axe"
+    Info:
+      Name: "&e&lTree Feller"
+      Description:
+        - '&7Starts to break more logs from the tree once broken.'
+        - 'For each level, it will break 1 more log in the upwards direction.'
+        - ''
+        - '&6Found in:'
+        - '&7 - &a&l&nCommon'
+        - '&7 - &9&l&nRare'
+        - '&7 - &4&l&nLegendary'
+        - '&6Enchantable Items: &aAxe'
+
   #Do not change this line.
   Furnace:
     Enabled: true

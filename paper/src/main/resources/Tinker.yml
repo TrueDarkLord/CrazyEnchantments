@@ -274,6 +274,9 @@ Tinker:
     Blast:
       Items: '20, 1'
       Book: '5, 1'
+    TreeFeller:
+      Items: '20,1'
+      Book: '5, 1'
     Furnace:
       Items: '20, 1'
       Book: '5, 1'
